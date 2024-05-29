@@ -1,9 +1,26 @@
-import { View, Text } from 'react-native'
+import { createStackNavigator } from '@react-navigation/stack';
+import { HomeScreen } from '../screens/home/HomeScreen';
+import { LoadingScreen } from '../screens/loading/LoadingScreen';
+import { LoginScreen } from '../screens/auth/LoginScreen';
+import { RegisterScreen } from '../screens/auth/RegisterScreen';
+
+export type RootStackParams = {
+  LoadingScreen: undefined;
+  LoginScreen: undefined;
+  RegisterScreen: undefined;
+  HomeScreen: undefined;
+  ProductScreen: {productId: string};
+};
+
+const Stack = createStackNavigator<RootStackParams>();
 
 export const StackNavigator = () => {
   return (
-    <View>
-      <Text>StackNavigator</Text>
-    </View>
-  )
+    <Stack.Navigator>
+      <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+    </Stack.Navigator>
+  );
 }
