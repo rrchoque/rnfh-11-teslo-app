@@ -3,6 +3,8 @@ import { useAuthStore } from "../../store/auth/useAuthStore";
 import { getProductsByPage } from "../../../actions/products/get-products-by-page";
 import { useQuery } from "@tanstack/react-query";
 import { MainLayout } from "../../layouts/MainLayout";
+import { FullScreenLoader } from "../../components/ui/FullScreenLoader";
+import { ProductList } from "../../components/products/ProductList";
 
 
 export const HomeScreen = () => {
@@ -13,7 +15,6 @@ export const HomeScreen = () => {
   const {isLoading, data: products = []} = useQuery({ 
     queryKey: ['products', 'infinite'],
     staleTime: 1000 * 60 * 60, // 1 hour
-
     queryFn: async params => await getProductsByPage(0),
   })
   
@@ -23,9 +24,9 @@ export const HomeScreen = () => {
     title="TesloShop - Products"
     subTitle="Aplicación administrativa">
     {isLoading ? (
-      <Text>Cargando..</Text>
+      <FullScreenLoader />
     ) : (
-      <Text>{ JSON.stringify(products) }</Text>
+      <ProductList products={products} />
     )}
   </MainLayout>
 
