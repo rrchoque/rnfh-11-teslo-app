@@ -5,14 +5,17 @@ import { RootStackParams } from '../../navigation/StackNavigator';
 import { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getProductById } from '../../../actions/products/get-product-by-id';
-import { Input, Layout, Text } from '@ui-kitten/components';
+import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
 import { FadeInImage } from '../../components/ui/FadeInImage';
+import {genders, sizes} from '../../../config/constants/constants';
+import { MyIcon } from '../../components/ui/MyIcon';
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
 
 export const ProductScreen = ({route}: Props) => {
 
   const productIdRef = useRef(route.params.productId);
+  const theme = useTheme();
 
   const {data: product} = useQuery({
     queryKey: ['product', productIdRef.current],
@@ -92,6 +95,55 @@ export const ProductScreen = ({route}: Props) => {
             keyboardType="numeric"
           />
         </Layout>
+
+        {/* Selectores */}
+        <ButtonGroup
+          style={{margin: 2, marginTop: 20, marginHorizontal: 15}}
+          size="small"
+          appearance="outline">
+          {sizes.map(size => (
+            <Button
+              onPress={() => {}}
+              key={size}
+              style={{
+                flex: 1,
+                backgroundColor: true
+                  ? theme['color-primary-200']
+                  : undefined,
+              }}>
+              {size}
+            </Button>
+          ))}
+        </ButtonGroup>
+
+        <ButtonGroup
+          style={{margin: 2, marginTop: 20, marginHorizontal: 15}}
+          size="small"
+          appearance="outline">
+          {genders.map(gender => (
+            <Button
+              onPress={() => {}}
+              key={gender}
+              style={{
+                flex: 1,
+                backgroundColor: true
+                  ? theme['color-primary-200']
+                  : undefined,
+              }}>
+              {gender}
+            </Button>
+          ))}
+        </ButtonGroup>
+
+        {/* Botón de guardar */}
+        <Button
+          accessoryLeft={<MyIcon name="save-outline" white />}
+          onPress={() => {}}
+          style={{margin: 15}}>
+          Guardar
+        </Button>
+
+        <Text>{ JSON.stringify(product, null, 2) }</Text>
         
         <Layout style={{height: 200}} />
       </ScrollView>
