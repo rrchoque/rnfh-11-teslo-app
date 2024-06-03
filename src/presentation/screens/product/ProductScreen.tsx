@@ -3,13 +3,15 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getProductById } from '../../../actions/products/get-product-by-id';
 import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
 import { FadeInImage } from '../../components/ui/FadeInImage';
 import {genders, sizes} from '../../../config/constants/constants';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { Formik } from 'formik';
+import { Product } from '../../../domain/entities/product';
+import { updateCreateProduct } from '../../../actions/products/update-create-product';
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
 
@@ -23,6 +25,16 @@ export const ProductScreen = ({route}: Props) => {
     queryFn: () => getProductById(productIdRef.current),
   });
 
+  const mutation = useMutation({
+    mutationFn: (data: Product) =>
+      updateCreateProduct({...data, id: productIdRef.current}),
+    onSuccess(data: Product) {
+      console.log('Success')
+      console.log({data})
+    },
+  });
+
+
   if (!product) {
     return <MainLayout title="Cargando..." />;
   }
@@ -30,7 +42,8 @@ export const ProductScreen = ({route}: Props) => {
   return (
     <Formik
       initialValues={product}
-      onSubmit={values => console.log(values)}
+      //onSubmit={values => mutation.mutate(values)}
+      onSubmit={mutation.mutate}
     >
       {
         ({ handleChange, handleSubmit, values, errors, setFieldValue}) => (
@@ -160,7 +173,8 @@ export const ProductScreen = ({route}: Props) => {
               {/* Botón de guardar */}
               <Button
                 accessoryLeft={<MyIcon name="save-outline" white />}
-                onPress={() => {}}
+                onPress={() => handleSubmit()}
+                disabled={mutation.isPending}
                 style={{margin: 15}}>
                 Guardar
               </Button>
