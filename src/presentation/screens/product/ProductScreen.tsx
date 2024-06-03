@@ -3,7 +3,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { useRef } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProductById } from '../../../actions/products/get-product-by-id';
 import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
 import { FadeInImage } from '../../components/ui/FadeInImage';
@@ -19,6 +19,7 @@ export const ProductScreen = ({route}: Props) => {
 
   const productIdRef = useRef(route.params.productId);
   const theme = useTheme();
+  const queryClient = useQueryClient();
 
   const {data: product} = useQuery({
     queryKey: ['product', productIdRef.current],
@@ -29,8 +30,11 @@ export const ProductScreen = ({route}: Props) => {
     mutationFn: (data: Product) =>
       updateCreateProduct({...data, id: productIdRef.current}),
     onSuccess(data: Product) {
-      console.log('Success')
-      console.log({data})
+      productIdRef.current = data.id; // creación
+
+      queryClient.invalidateQueries({queryKey: ['products', 'infinite']});
+      queryClient.invalidateQueries({queryKey: ['product', data.id]});
+      // queryClient.setQueryData(['product',  data.id ], data);
     },
   });
 
