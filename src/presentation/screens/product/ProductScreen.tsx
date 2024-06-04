@@ -12,6 +12,7 @@ import { MyIcon } from '../../components/ui/MyIcon';
 import { Formik } from 'formik';
 import { Product } from '../../../domain/entities/product';
 import { updateCreateProduct } from '../../../actions/products/update-create-product';
+import { ProductImages } from '../../components/products/ProductImages';
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
 
@@ -63,18 +64,7 @@ export const ProductScreen = ({route}: Props) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                  <FlatList 
-                    data={values.images}
-                    keyExtractor={ ( item ) => item}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={ ({ item }) => (
-                      <FadeInImage 
-                        uri={ item }
-                        style={{ width: 300, height: 300, marginHorizontal: 7 }}
-                      /> 
-                    )}
-                  />
+                  <ProductImages images={values.images} />
               </Layout>
     
               {/* Formulario */}
