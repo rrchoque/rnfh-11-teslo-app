@@ -1,18 +1,16 @@
 import { MainLayout } from '../../layouts/MainLayout';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getProductById } from '../../../actions/products/get-product-by-id';
 import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components';
-import { FadeInImage } from '../../components/ui/FadeInImage';
 import {genders, sizes} from '../../../config/constants/constants';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { Formik } from 'formik';
 import { Product } from '../../../domain/entities/product';
-import { updateCreateProduct } from '../../../actions/products/update-create-product';
 import { ProductImages } from '../../components/products/ProductImages';
+import { getProductById, updateCreateProduct } from '../../../actions/products';
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
 
