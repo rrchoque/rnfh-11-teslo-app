@@ -45,8 +45,6 @@ export const MainLayout = ({
     )
   }
 
-
-
   return (
     <Layout style={{ paddingTop: top }}>
       <TopNavigation 

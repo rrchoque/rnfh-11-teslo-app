@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import { Product } from '../../../domain/entities/product';
 import { ProductImages } from '../../components/products/ProductImages';
 import { getProductById, updateCreateProduct } from '../../../actions/products';
+import { CameraAdapter } from '../../../config/adapters/camera-adapter';
 
 interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
 
@@ -53,6 +54,11 @@ export const ProductScreen = ({route}: Props) => {
           <MainLayout 
             title={values.title} 
             subTitle={`Precio: ${values.price}`}
+            rightAction={ async() => { 
+              const photos = await CameraAdapter.takePicture();
+              setFieldValue('images', [...values.images, ...photos])  
+             }}
+            rightActionIcon="camera-outline"
           >
             <ScrollView style={{flex: 1}}>
               {/* Imágenes de el producto */}
